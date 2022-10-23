@@ -1,0 +1,3323 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptions_634d4e45333a350058070001_displayName": {
+            "type": "SecureString"
+        },
+        "subscriptions_634d4e45333a350058070002_displayName": {
+            "type": "SecureString"
+        },
+        "users_1_lastName": {
+            "type": "SecureString"
+        },
+        "sites_app_telemetria_name": {
+            "defaultValue": "app-telemetria",
+            "type": "String"
+        },
+        "sites_FnGravarPedido_name": {
+            "defaultValue": "FnGravarPedido",
+            "type": "String"
+        },
+        "vaults_kvtelemetria01_name": {
+            "defaultValue": "kvtelemetria01",
+            "type": "String"
+        },
+        "sites_FnGenerateDataCosmos_name": {
+            "defaultValue": "FnGenerateDataCosmos",
+            "type": "String"
+        },
+        "service_api_telemetria_name": {
+            "defaultValue": "api-telemetria",
+            "type": "String"
+        },
+        "databaseAccounts_dbpedidos_name": {
+            "defaultValue": "dbpedidos",
+            "type": "String"
+        },
+        "components_app_monitoramento_name": {
+            "defaultValue": "app-monitoramento",
+            "type": "String"
+        },
+        "serverfarms_ASP_XpeTelemetry_85b4_name": {
+            "defaultValue": "ASP-XpeTelemetry-85b4",
+            "type": "String"
+        },
+        "serverfarms_ASP_XpeTelemetry_a543_name": {
+            "defaultValue": "ASP-XpeTelemetry-a543",
+            "type": "String"
+        },
+        "storageAccounts_xpetelemetry8a96_name": {
+            "defaultValue": "xpetelemetry8a96",
+            "type": "String"
+        },
+        "storageAccounts_xpetelemetry9e7f_name": {
+            "defaultValue": "xpetelemetry9e7f",
+            "type": "String"
+        },
+        "namespaces_sb_processar_pedidos_name": {
+            "defaultValue": "sb-processar-pedidos",
+            "type": "String"
+        },
+        "storageAccounts_xpestoragepedido01_name": {
+            "defaultValue": "xpestoragepedido01",
+            "type": "String"
+        },
+        "smartdetectoralertrules_failure_anomalies___app_monitoramento_name": {
+            "defaultValue": "failure anomalies - app-monitoramento",
+            "type": "String"
+        },
+        "actiongroups_application_insights_smart_detection_externalid": {
+            "defaultValue": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/adf02/providers/microsoft.insights/actiongroups/application insights smart detection",
+            "type": "String"
+        },
+        "workspaces_DefaultWorkspace_f0b99507_d9cd_4a31_93f8_ce27b88b7969_SCUS_externalid": {
+            "defaultValue": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/DefaultResourceGroup-SCUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-f0b99507-d9cd-4a31-93f8-ce27b88b7969-SCUS",
+            "type": "String"
+        },
+        "serverfarms_ASP_appxpegroup_8345_externalid": {
+            "defaultValue": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/appxpe_group/providers/Microsoft.Web/serverfarms/ASP-appxpegroup-8345",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[parameters('service_api_telemetria_name')]",
+            "location": "West US",
+            "sku": {
+                "name": "Developer",
+                "capacity": 1
+            },
+            "properties": {
+                "publisherEmail": "escreveai44@hotmail.com",
+                "publisherName": "[parameters('service_api_telemetria_name')]",
+                "notificationSenderEmail": "apimgmt-noreply@mail.windowsazure.com",
+                "hostnameConfigurations": [
+                    {
+                        "type": "Proxy",
+                        "hostName": "[concat(parameters('service_api_telemetria_name'), '.azure-api.net')]",
+                        "negotiateClientCertificate": false,
+                        "defaultSslBinding": true,
+                        "certificateSource": "BuiltIn"
+                    }
+                ],
+                "customProperties": {
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Ssl30": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168": "false",
+                    "Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Ssl30": "false"
+                },
+                "virtualNetworkType": "None",
+                "disableGateway": false,
+                "apiVersionConstraint": {},
+                "publicNetworkAccess": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "apiVersion": "2022-08-15",
+            "name": "[parameters('databaseAccounts_dbpedidos_name')]",
+            "location": "West US",
+            "tags": {
+                "defaultExperience": "Core (SQL)",
+                "hidden-cosmos-mmspecial": ""
+            },
+            "kind": "GlobalDocumentDB",
+            "identity": {
+                "type": "None"
+            },
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "enableAutomaticFailover": false,
+                "enableMultipleWriteLocations": false,
+                "isVirtualNetworkFilterEnabled": false,
+                "virtualNetworkRules": [],
+                "disableKeyBasedMetadataWriteAccess": false,
+                "enableFreeTier": false,
+                "enableAnalyticalStorage": false,
+                "analyticalStorageConfiguration": {
+                    "schemaType": "WellDefined"
+                },
+                "databaseAccountOfferType": "Standard",
+                "defaultIdentity": "FirstPartyIdentity",
+                "networkAclBypass": "None",
+                "disableLocalAuth": false,
+                "enablePartitionMerge": false,
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
+                },
+                "locations": [
+                    {
+                        "locationName": "West US",
+                        "provisioningState": "Succeeded",
+                        "failoverPriority": 0,
+                        "isZoneRedundant": false
+                    }
+                ],
+                "cors": [],
+                "capabilities": [
+                    {
+                        "name": "EnableServerless"
+                    }
+                ],
+                "ipRules": [],
+                "backupPolicy": {
+                    "type": "Periodic",
+                    "periodicModeProperties": {
+                        "backupIntervalInMinutes": 240,
+                        "backupRetentionIntervalInHours": 8,
+                        "backupStorageRedundancy": "Geo"
+                    }
+                },
+                "networkAclBypassResourceIds": [],
+                "capacity": {
+                    "totalThroughputLimit": 4000
+                },
+                "keysMetadata": {}
+            }
+        },
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2020-02-02",
+            "name": "[parameters('components_app_monitoramento_name')]",
+            "location": "southcentralus",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Flow_Type": "Redfield",
+                "Request_Source": "IbizaAIExtension",
+                "RetentionInDays": 90,
+                "WorkspaceResourceId": "[parameters('workspaces_DefaultWorkspace_f0b99507_d9cd_4a31_93f8_ce27b88b7969_SCUS_externalid')]",
+                "IngestionMode": "LogAnalytics",
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2022-07-01",
+            "name": "[parameters('vaults_kvtelemetria01_name')]",
+            "location": "eastus",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "Standard"
+                },
+                "tenantId": "7247031b-59eb-41cb-b463-ac1db7d5a4d0",
+                "accessPolicies": [
+                    {
+                        "tenantId": "7247031b-59eb-41cb-b463-ac1db7d5a4d0",
+                        "objectId": "6f307f3b-58e2-4d3a-899f-92a0205da0db",
+                        "permissions": {
+                            "keys": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "GetRotationPolicy",
+                                "SetRotationPolicy",
+                                "Rotate"
+                            ],
+                            "secrets": [
+                                "Get",
+                                "List",
+                                "Set",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore"
+                            ],
+                            "certificates": [
+                                "Get",
+                                "List",
+                                "Update",
+                                "Create",
+                                "Import",
+                                "Delete",
+                                "Recover",
+                                "Backup",
+                                "Restore",
+                                "ManageContacts",
+                                "ManageIssuers",
+                                "GetIssuers",
+                                "ListIssuers",
+                                "SetIssuers",
+                                "DeleteIssuers"
+                            ]
+                        }
+                    },
+                    {
+                        "tenantId": "7247031b-59eb-41cb-b463-ac1db7d5a4d0",
+                        "objectId": "dd13f04c-d07a-4114-9d6b-f5c2b5ccf387",
+                        "permissions": {
+                            "keys": [],
+                            "secrets": [
+                                "Get",
+                                "List"
+                            ],
+                            "certificates": []
+                        }
+                    }
+                ],
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "enableRbacAuthorization": false,
+                "vaultUri": "[concat('https://', parameters('vaults_kvtelemetria01_name'), '.vault.azure.net/')]",
+                "provisioningState": "Succeeded",
+                "publicNetworkAccess": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces",
+            "apiVersion": "2022-01-01-preview",
+            "name": "[parameters('namespaces_sb_processar_pedidos_name')]",
+            "location": "Brazil South",
+            "sku": {
+                "name": "Basic",
+                "tier": "Basic"
+            },
+            "properties": {
+                "minimumTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "disableLocalAuth": false,
+                "zoneRedundant": false
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('storageAccounts_xpestoragepedido01_name')]",
+            "location": "eastus",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "dnsEndpointType": "Standard",
+                "defaultToOAuthAuthentication": false,
+                "publicNetworkAccess": "Enabled",
+                "allowCrossTenantReplication": true,
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true,
+                "allowSharedKeyAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "requireInfrastructureEncryption": false,
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('storageAccounts_xpetelemetry8a96_name')]",
+            "location": "centralus",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "properties": {
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2022-05-01",
+            "name": "[parameters('storageAccounts_xpetelemetry9e7f_name')]",
+            "location": "centralus",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "properties": {
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true,
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2022-03-01",
+            "name": "[parameters('serverfarms_ASP_XpeTelemetry_85b4_name')]",
+            "location": "Central US",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2022-03-01",
+            "name": "[parameters('serverfarms_ASP_XpeTelemetry_a543_name')]",
+            "location": "Central US",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "properties": {
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-03-01",
+            "name": "[parameters('sites_app_telemetria_name')]",
+            "location": "Central US",
+            "kind": "app",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "[concat(parameters('sites_app_telemetria_name'), '.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "[concat(parameters('sites_app_telemetria_name'), '.scm.azurewebsites.net')]",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[parameters('serverfarms_ASP_appxpegroup_8345_externalid')]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "vnetRouteAllEnabled": false,
+                "vnetImagePullEnabled": false,
+                "vnetContentShareEnabled": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "98F51141B3A1CA083369CC42B2B36FFCA40E24B83A7718CCBED42E83F609478E",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
+            "apiVersion": "2021-04-01",
+            "name": "[parameters('smartdetectoralertrules_failure_anomalies___app_monitoramento_name')]",
+            "location": "global",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
+                "state": "Enabled",
+                "severity": "Sev3",
+                "frequency": "PT1M",
+                "detector": {
+                    "id": "FailureAnomaliesDetector"
+                },
+                "scope": [
+                    "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+                ],
+                "actionGroups": {
+                    "groupIds": [
+                        "[parameters('actiongroups_application_insights_smart_detection_externalid')]"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/api-version-sets",
+            "apiVersion": "2018-06-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/634d995e3e8ca2c6280a7626')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "FnGenerateDataCosmos",
+                "versioningScheme": "Segment"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/api-version-sets",
+            "apiVersion": "2018-06-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/634d9cd6d090615c14fc4f96')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "FnGravarPedido",
+                "versioningScheme": "Segment"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apiVersionSets",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/634d995e3e8ca2c6280a7626')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "FnGenerateDataCosmos",
+                "versioningScheme": "Segment"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apiVersionSets",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/634d9cd6d090615c14fc4f96')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "FnGravarPedido",
+                "versioningScheme": "Segment"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/backends",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngeneratedatacosmos')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "description": "FnGenerateDataCosmos",
+                "url": "https://fngeneratedatacosmos.azurewebsites.net/api",
+                "protocol": "http",
+                "resourceId": "https://management.azure.com/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/Microsoft.Web/sites/FnGenerateDataCosmos",
+                "credentials": {
+                    "header": {
+                        "x-functions-key": [
+                            "{{fngeneratedatacosmos-key}}"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/backends",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngravarpedido')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "description": "FnGravarPedido",
+                "url": "https://fngravarpedido.azurewebsites.net/api",
+                "protocol": "http",
+                "resourceId": "https://management.azure.com/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/Microsoft.Web/sites/FnGravarPedido",
+                "credentials": {
+                    "header": {
+                        "x-functions-key": [
+                            "{{fngravarpedido-key}}"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/groups",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/administrators')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "Administrators",
+                "description": "Administrators is a built-in group containing the admin email account provided at the time of service creation. Its membership is managed by the system.",
+                "type": "system"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/groups",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/developers')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "Developers",
+                "description": "Developers is a built-in group. Its membership is managed by the system. Signed-in users fall into this group.",
+                "type": "system"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/groups",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/guests')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "Guests",
+                "description": "Guests is a built-in group. Its membership is managed by the system. Unauthenticated users visiting the developer portal fall into this group.",
+                "type": "system"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/namedValues",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/634d5cef463461142490efa2')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "Logger-Credentials--634d5cef463461142490efa3",
+                "secret": true
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/namedValues",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngeneratedatacosmos-key')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "fngeneratedatacosmos-key",
+                "tags": [
+                    "key",
+                    "function",
+                    "auto"
+                ],
+                "secret": true
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/namedValues",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngravarpedido-key')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "fngravarpedido-key",
+                "tags": [
+                    "key",
+                    "function",
+                    "auto"
+                ],
+                "secret": true
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/notifications",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/AccountClosedPublisher')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/notifications",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/BCC')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/notifications",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/NewApplicationNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/notifications",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/NewIssuePublisherNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/notifications",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/PurchasePublisherNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/notifications",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/QuotaLimitApproachingPublisherNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/notifications",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/RequestPublisherNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/policies",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/policy')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "value": "<!--\r\n    IMPORTANT:\r\n    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.\r\n    - Only the <forward-request> policy element can appear within the <backend> section element.\r\n    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.\r\n    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.\r\n    - To add a policy position the cursor at the desired insertion point and click on the round button associated with the policy.\r\n    - To remove a policy, delete the corresponding policy statement from the policy document.\r\n    - Policies are applied in the order of their appearance, from the top down.\r\n-->\r\n<policies>\r\n  <inbound />\r\n  <backend>\r\n    <forward-request />\r\n  </backend>\r\n  <outbound />\r\n</policies>",
+                "format": "xml"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/portalsettings",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/delegation')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subscriptions": {
+                    "enabled": false
+                },
+                "userRegistration": {
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/portalsettings",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/signin')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "enabled": false
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/portalsettings",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/signup')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "enabled": true,
+                "termsOfService": {
+                    "enabled": false,
+                    "consentRequired": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/starter')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "Starter",
+                "description": "Subscribers will be able to run 5 calls/minute up to a maximum of 100 calls/week.",
+                "subscriptionRequired": true,
+                "approvalRequired": false,
+                "subscriptionsLimit": 1,
+                "state": "published"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/unlimited')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "Unlimited",
+                "description": "Subscribers have completely unlimited access to the API. Administrator approval is required.",
+                "subscriptionRequired": true,
+                "approvalRequired": true,
+                "subscriptionsLimit": 1,
+                "state": "published"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/properties",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/634d5cef463461142490efa2')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "Logger-Credentials--634d5cef463461142490efa3",
+                "value": "b8d036e7-5b49-4fb7-988c-3a37629ecf34",
+                "secret": true
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/properties",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngeneratedatacosmos-key')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "fngeneratedatacosmos-key",
+                "value": "x5EbZTzRtBlm5jnRzek+i+eb4lOv0hgmGPIk8zgo83Ou0HkW1CZW8A==",
+                "tags": [
+                    "key",
+                    "function",
+                    "auto"
+                ],
+                "secret": true
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/properties",
+            "apiVersion": "2019-01-01",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngravarpedido-key')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "fngravarpedido-key",
+                "value": "PAaQemyBCknpc3Y5/YlmJnHqh3+tjX6zdRQhdxTGBDuXxHKxMwoi+w==",
+                "tags": [
+                    "key",
+                    "function",
+                    "auto"
+                ],
+                "secret": true
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/subscriptions",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/master')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "scope": "[concat(resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name')), '/')]",
+                "displayName": "Built-in all-access subscription",
+                "state": "active",
+                "allowTracing": false
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/tags",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/dev')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "dev"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/AccountClosedDeveloper')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Thank you for using the $OrganizationName API!",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          On behalf of $OrganizationName and our customers we thank you for giving us a try. Your $OrganizationName API account is now closed.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Your $OrganizationName Team</p>\r\n    <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n    <p />\r\n  </body>\r\n</html>",
+                "title": "Developer farewell letter",
+                "description": "Developers receive this farewell email after they close their account.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/ApplicationApprovedNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Your application $AppName is published in the application gallery",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          We are happy to let you know that your request to publish the $AppName application in the application gallery has been approved. Your application has been published and can be viewed <a href=\"http://$DevPortalUrl/Applications/Details/$AppId\">here</a>.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n  </body>\r\n</html>",
+                "title": "Application gallery submission approved (deprecated)",
+                "description": "Developers who submitted their application for publication in the application gallery on the developer portal receive this email after their submission is approved.",
+                "parameters": [
+                    {
+                        "name": "AppId",
+                        "title": "Application id"
+                    },
+                    {
+                        "name": "AppName",
+                        "title": "Application name"
+                    },
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/ConfirmSignUpIdentityDefault')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Please confirm your new $OrganizationName API account",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <title>Letter</title>\r\n  </head>\r\n  <body>\r\n    <table width=\"100%\">\r\n      <tr>\r\n        <td>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\"></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you for joining the $OrganizationName API program! We host a growing number of cool APIs and strive to provide an awesome experience for API developers.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">First order of business is to activate your account and get you going. To that end, please click on the following link:</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a id=\"confirmUrl\" href=\"$ConfirmUrl\" style=\"text-decoration:none\">\r\n              <strong>$ConfirmUrl</strong>\r\n            </a>\r\n          </p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">If clicking the link does not work, please copy-and-paste or re-type it into your browser's address bar and hit \"Enter\".</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n          </p>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </body>\r\n</html>",
+                "title": "New developer account confirmation",
+                "description": "Developers receive this email to confirm their e-mail address after they sign up for a new account.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    },
+                    {
+                        "name": "ConfirmUrl",
+                        "title": "Developer activation URL"
+                    },
+                    {
+                        "name": "DevPortalHost",
+                        "title": "Developer portal hostname"
+                    },
+                    {
+                        "name": "ConfirmQuery",
+                        "title": "Query string part of the activation URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/EmailChangeIdentityDefault')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Please confirm the new email associated with your $OrganizationName API account",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <title>Letter</title>\r\n  </head>\r\n  <body>\r\n    <table width=\"100%\">\r\n      <tr>\r\n        <td>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\"></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">You are receiving this email because you made a change to the email address on your $OrganizationName API account.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Please click on the following link to confirm the change:</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a id=\"confirmUrl\" href=\"$ConfirmUrl\" style=\"text-decoration:none\">\r\n              <strong>$ConfirmUrl</strong>\r\n            </a>\r\n          </p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">If clicking the link does not work, please copy-and-paste or re-type it into your browser's address bar and hit \"Enter\".</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n          </p>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </body>\r\n</html>",
+                "title": "Email change confirmation",
+                "description": "Developers receive this email to confirm a new e-mail address after they change their existing one associated with their account.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    },
+                    {
+                        "name": "ConfirmUrl",
+                        "title": "Developer confirmation URL"
+                    },
+                    {
+                        "name": "DevPortalHost",
+                        "title": "Developer portal hostname"
+                    },
+                    {
+                        "name": "ConfirmQuery",
+                        "title": "Query string part of the confirmation URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/InviteUserNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "You are invited to join the $OrganizationName developer network",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Your account has been created. Please follow the link below to visit the $OrganizationName developer portal and claim it:\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <a href=\"$ConfirmUrl\">$ConfirmUrl</a>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n  </body>\r\n</html>",
+                "title": "Invite user",
+                "description": "An e-mail invitation to create an account, sent on request by API publishers.",
+                "parameters": [
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "ConfirmUrl",
+                        "title": "Confirmation link"
+                    },
+                    {
+                        "name": "DevPortalHost",
+                        "title": "Developer portal hostname"
+                    },
+                    {
+                        "name": "ConfirmQuery",
+                        "title": "Query string part of the confirmation link"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/NewCommentNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "$IssueName issue has a new comment",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">This is a brief note to let you know that $CommenterFirstName $CommenterLastName made the following comment on the issue $IssueName you created:</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">$CommentText</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          To view the issue on the developer portal click <a href=\"http://$DevPortalUrl/issues/$IssueId\">here</a>.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n  </body>\r\n</html>",
+                "title": "New comment added to an issue (deprecated)",
+                "description": "Developers receive this email when someone comments on the issue they created on the Issues page of the developer portal.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "CommenterFirstName",
+                        "title": "Commenter first name"
+                    },
+                    {
+                        "name": "CommenterLastName",
+                        "title": "Commenter last name"
+                    },
+                    {
+                        "name": "IssueId",
+                        "title": "Issue id"
+                    },
+                    {
+                        "name": "IssueName",
+                        "title": "Issue name"
+                    },
+                    {
+                        "name": "CommentText",
+                        "title": "Comment text"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/NewDeveloperNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Welcome to the $OrganizationName API!",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <title>Letter</title>\r\n  </head>\r\n  <body>\r\n    <h1 style=\"color:#000505;font-size:18pt;font-family:'Segoe UI'\">\r\n          Welcome to <span style=\"color:#003363\">$OrganizationName API!</span></h1>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Your $OrganizationName API program registration is completed and we are thrilled to have you as a customer. Here are a few important bits of information for your reference:</p>\r\n    <table width=\"100%\" style=\"margin:20px 0\">\r\n      <tr>\r\n            #if ($IdentityProvider == \"Basic\")\r\n            <td width=\"50%\" style=\"height:40px;vertical-align:top;font-family:'Segoe UI';font-size:12pt\">\r\n              Please use the following <strong>username</strong> when signing into any of the ${OrganizationName}-hosted developer portals:\r\n            </td><td style=\"vertical-align:top;font-family:'Segoe UI';font-size:12pt\"><strong>$DevUsername</strong></td>\r\n            #else\r\n            <td width=\"50%\" style=\"height:40px;vertical-align:top;font-family:'Segoe UI';font-size:12pt\">\r\n              Please use the following <strong>$IdentityProvider account</strong> when signing into any of the ${OrganizationName}-hosted developer portals:\r\n            </td><td style=\"vertical-align:top;font-family:'Segoe UI';font-size:12pt\"><strong>$DevUsername</strong></td>            \r\n            #end\r\n          </tr>\r\n      <tr>\r\n        <td style=\"height:40px;vertical-align:top;font-family:'Segoe UI';font-size:12pt\">\r\n              We will direct all communications to the following <strong>email address</strong>:\r\n            </td>\r\n        <td style=\"vertical-align:top;font-family:'Segoe UI';font-size:12pt\">\r\n          <a href=\"mailto:$DevEmail\" style=\"text-decoration:none\">\r\n            <strong>$DevEmail</strong>\r\n          </a>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best of luck in your API pursuits!</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <a href=\"http://$DevPortalUrl\">$DevPortalUrl</a>\r\n    </p>\r\n  </body>\r\n</html>",
+                "title": "Developer welcome letter",
+                "description": "Developers receive this “welcome” email after they confirm their new account.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "DevUsername",
+                        "title": "Developer user name"
+                    },
+                    {
+                        "name": "DevEmail",
+                        "title": "Developer email"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    },
+                    {
+                        "name": "IdentityProvider",
+                        "title": "Identity Provider selected by Organization"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/NewIssueNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Your request $IssueName was received",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you for contacting us. Our API team will review your issue and get back to you soon.</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Click this <a href=\"http://$DevPortalUrl/issues/$IssueId\">link</a> to view or edit your request.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Best,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n  </body>\r\n</html>",
+                "title": "New issue received (deprecated)",
+                "description": "This email is sent to developers after they create a new topic on the Issues page of the developer portal.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "IssueId",
+                        "title": "Issue id"
+                    },
+                    {
+                        "name": "IssueName",
+                        "title": "Issue name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/PasswordResetByAdminNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Your password was reset",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <table width=\"100%\">\r\n      <tr>\r\n        <td>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\"></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">The password of your $OrganizationName API account has been reset, per your request.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n                Your new password is: <strong>$DevPassword</strong></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Please make sure to change it next time you sign in.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n          </p>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </body>\r\n</html>",
+                "title": "Password reset by publisher notification (Password reset by admin)",
+                "description": "Developers receive this email when the publisher resets their password.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "DevPassword",
+                        "title": "New Developer password"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/PasswordResetIdentityDefault')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Your password change request",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <title>Letter</title>\r\n  </head>\r\n  <body>\r\n    <table width=\"100%\">\r\n      <tr>\r\n        <td>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\"></p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">You are receiving this email because you requested to change the password on your $OrganizationName API account.</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Please click on the link below and follow instructions to create your new password:</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a id=\"resetUrl\" href=\"$ConfirmUrl\" style=\"text-decoration:none\">\r\n              <strong>$ConfirmUrl</strong>\r\n            </a>\r\n          </p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">If clicking the link does not work, please copy-and-paste or re-type it into your browser's address bar and hit \"Enter\".</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">$OrganizationName API Team</p>\r\n          <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n          </p>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </body>\r\n</html>",
+                "title": "Password change confirmation",
+                "description": "Developers receive this email when they request a password change of their account. The purpose of the email is to verify that the account owner made the request and to provide a one-time perishable URL for changing the password.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    },
+                    {
+                        "name": "ConfirmUrl",
+                        "title": "Developer new password instruction URL"
+                    },
+                    {
+                        "name": "DevPortalHost",
+                        "title": "Developer portal hostname"
+                    },
+                    {
+                        "name": "ConfirmQuery",
+                        "title": "Query string part of the instruction URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/PurchaseDeveloperNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Your subscription to the $ProdName",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Greetings $DevFirstName $DevLastName!</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Thank you for subscribing to the <a href=\"http://$DevPortalUrl/products/$ProdId\"><strong>$ProdName</strong></a> and welcome to the $OrganizationName developer community. We are delighted to have you as part of the team and are looking forward to the amazing applications you will build using our API!\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Below are a few subscription details for your reference:</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <ul>\r\n            #if ($SubStartDate != \"\")\r\n            <li style=\"font-size:12pt;font-family:'Segoe UI'\">Start date: $SubStartDate</li>\r\n            #end\r\n            \r\n            #if ($SubTerm != \"\")\r\n            <li style=\"font-size:12pt;font-family:'Segoe UI'\">Subscription term: $SubTerm</li>\r\n            #end\r\n          </ul>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n            Visit the developer <a href=\"http://$DevPortalUrl/developer\">profile area</a> to manage your subscription and subscription keys\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">A couple of pointers to help get you started:</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <strong>\r\n        <a href=\"http://$DevPortalUrl/docs/services?product=$ProdId\">Learn about the API</a>\r\n      </strong>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The API documentation provides all information necessary to make a request and to process a response. Code samples are provided per API operation in a variety of languages. Moreover, an interactive console allows making API calls directly from the developer portal without writing any code.</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <strong>\r\n        <a href=\"http://$DevPortalUrl/applications\">Feature your app in the app gallery</a>\r\n      </strong>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">You can publish your application on our gallery for increased visibility to potential new users.</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n      <strong>\r\n        <a href=\"http://$DevPortalUrl/issues\">Stay in touch</a>\r\n      </strong>\r\n    </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          If you have an issue, a question, a suggestion, a request, or if you just want to tell us something, go to the <a href=\"http://$DevPortalUrl/issues\">Issues</a> page on the developer portal and create a new topic.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Happy hacking,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n    <a style=\"font-size:12pt;font-family:'Segoe UI'\" href=\"http://$DevPortalUrl\">$DevPortalUrl</a>\r\n  </body>\r\n</html>",
+                "title": "New subscription activated",
+                "description": "Developers receive this acknowledgement email after subscribing to a product.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "ProdId",
+                        "title": "Product ID"
+                    },
+                    {
+                        "name": "ProdName",
+                        "title": "Product name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "SubStartDate",
+                        "title": "Subscription start date"
+                    },
+                    {
+                        "name": "SubTerm",
+                        "title": "Subscription term"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/QuotaLimitApproachingDeveloperNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "You are approaching an API quota limit",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head>\r\n    <style>\r\n          body {font-size:12pt; font-family:\"Segoe UI\",\"Segoe WP\",\"Tahoma\",\"Arial\",\"sans-serif\";}\r\n          .alert { color: red; }\r\n          .child1 { padding-left: 20px; }\r\n          .child2 { padding-left: 40px; }\r\n          .number { text-align: right; }\r\n          .text { text-align: left; }\r\n          th, td { padding: 4px 10px; min-width: 100px; }\r\n          th { background-color: #DDDDDD;}\r\n        </style>\r\n  </head>\r\n  <body>\r\n    <p>Greetings $DevFirstName $DevLastName!</p>\r\n    <p>\r\n          You are approaching the quota limit on you subscription to the <strong>$ProdName</strong> product (primary key $SubPrimaryKey).\r\n          #if ($QuotaResetDate != \"\")\r\n          This quota will be renewed on $QuotaResetDate.\r\n          #else\r\n          This quota will not be renewed.\r\n          #end\r\n        </p>\r\n    <p>Below are details on quota usage for the subscription:</p>\r\n    <p>\r\n      <table>\r\n        <thead>\r\n          <th class=\"text\">Quota Scope</th>\r\n          <th class=\"number\">Calls</th>\r\n          <th class=\"number\">Call Quota</th>\r\n          <th class=\"number\">Bandwidth</th>\r\n          <th class=\"number\">Bandwidth Quota</th>\r\n        </thead>\r\n        <tbody>\r\n          <tr>\r\n            <td class=\"text\">Subscription</td>\r\n            <td class=\"number\">\r\n                  #if ($CallsAlert == true)\r\n                  <span class=\"alert\">$Calls</span>\r\n                  #else\r\n                  $Calls\r\n                  #end\r\n                </td>\r\n            <td class=\"number\">$CallQuota</td>\r\n            <td class=\"number\">\r\n                  #if ($BandwidthAlert == true)\r\n                  <span class=\"alert\">$Bandwidth</span>\r\n                  #else\r\n                  $Bandwidth\r\n                  #end\r\n                </td>\r\n            <td class=\"number\">$BandwidthQuota</td>\r\n          </tr>\r\n              #foreach ($api in $Apis)\r\n              <tr><td class=\"child1 text\">API: $api.Name</td><td class=\"number\">\r\n                  #if ($api.CallsAlert == true)\r\n                  <span class=\"alert\">$api.Calls</span>\r\n                  #else\r\n                  $api.Calls\r\n                  #end\r\n                </td><td class=\"number\">$api.CallQuota</td><td class=\"number\">\r\n                  #if ($api.BandwidthAlert == true)\r\n                  <span class=\"alert\">$api.Bandwidth</span>\r\n                  #else\r\n                  $api.Bandwidth\r\n                  #end\r\n                </td><td class=\"number\">$api.BandwidthQuota</td></tr>\r\n              #foreach ($operation in $api.Operations)\r\n              <tr><td class=\"child2 text\">Operation: $operation.Name</td><td class=\"number\">\r\n                  #if ($operation.CallsAlert == true)\r\n                  <span class=\"alert\">$operation.Calls</span>\r\n                  #else\r\n                  $operation.Calls\r\n                  #end\r\n                </td><td class=\"number\">$operation.CallQuota</td><td class=\"number\">\r\n                  #if ($operation.BandwidthAlert == true)\r\n                  <span class=\"alert\">$operation.Bandwidth</span>\r\n                  #else\r\n                  $operation.Bandwidth\r\n                  #end\r\n                </td><td class=\"number\">$operation.BandwidthQuota</td></tr>\r\n              #end\r\n              #end\r\n            </tbody>\r\n      </table>\r\n    </p>\r\n    <p>Thank you,</p>\r\n    <p>$OrganizationName API Team</p>\r\n    <a href=\"$DevPortalUrl\">$DevPortalUrl</a>\r\n    <p />\r\n  </body>\r\n</html>",
+                "title": "Developer quota limit approaching notification",
+                "description": "Developers receive this email to alert them when they are approaching a quota limit.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "ProdName",
+                        "title": "Product name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "SubPrimaryKey",
+                        "title": "Primary Subscription key"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    },
+                    {
+                        "name": "QuotaResetDate",
+                        "title": "Quota reset date"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/RejectDeveloperNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Your subscription request for the $ProdName",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          We would like to inform you that we reviewed your subscription request for the <strong>$ProdName</strong>.\r\n        </p>\r\n        #if ($SubDeclineReason == \"\")\r\n        <p style=\"font-size:12pt;font-family:'Segoe UI'\">Regretfully, we were unable to approve it, as subscriptions are temporarily suspended at this time.</p>\r\n        #else\r\n        <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Regretfully, we were unable to approve it at this time for the following reason:\r\n          <div style=\"margin-left: 1.5em;\"> $SubDeclineReason </div></p>\r\n        #end\r\n        <p style=\"font-size:12pt;font-family:'Segoe UI'\"> We truly appreciate your interest. </p><p style=\"font-size:12pt;font-family:'Segoe UI'\">All the best,</p><p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p><a style=\"font-size:12pt;font-family:'Segoe UI'\" href=\"http://$DevPortalUrl\">$DevPortalUrl</a></body>\r\n</html>",
+                "title": "Subscription request declined",
+                "description": "This email is sent to developers when their subscription requests for products requiring publisher approval is declined.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "SubDeclineReason",
+                        "title": "Reason for declining subscription"
+                    },
+                    {
+                        "name": "ProdName",
+                        "title": "Product name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/templates",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/RequestDeveloperNotificationMessage')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "subject": "Your subscription request for the $ProdName",
+                "body": "<!DOCTYPE html >\r\n<html>\r\n  <head />\r\n  <body>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Dear $DevFirstName $DevLastName,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          Thank you for your interest in our <strong>$ProdName</strong> API product!\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">\r\n          We were delighted to receive your subscription request. We will promptly review it and get back to you at <strong>$DevEmail</strong>.\r\n        </p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">Thank you,</p>\r\n    <p style=\"font-size:12pt;font-family:'Segoe UI'\">The $OrganizationName API Team</p>\r\n    <a style=\"font-size:12pt;font-family:'Segoe UI'\" href=\"http://$DevPortalUrl\">$DevPortalUrl</a>\r\n  </body>\r\n</html>",
+                "title": "Subscription request received",
+                "description": "This email is sent to developers to acknowledge receipt of their subscription requests for products requiring publisher approval.",
+                "parameters": [
+                    {
+                        "name": "DevFirstName",
+                        "title": "Developer first name"
+                    },
+                    {
+                        "name": "DevLastName",
+                        "title": "Developer last name"
+                    },
+                    {
+                        "name": "DevEmail",
+                        "title": "Developer email"
+                    },
+                    {
+                        "name": "ProdName",
+                        "title": "Product name"
+                    },
+                    {
+                        "name": "OrganizationName",
+                        "title": "Organization name"
+                    },
+                    {
+                        "name": "DevPortalUrl",
+                        "title": "Developer portal URL"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/users",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "firstName": "Administrator",
+                "email": "escreveai44@hotmail.com",
+                "state": "active",
+                "identities": [
+                    {
+                        "provider": "Azure",
+                        "id": "escreveai44@hotmail.com"
+                    }
+                ],
+                "lastName": "[parameters('users_1_lastName')]"
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases",
+            "apiVersion": "2022-08-15",
+            "name": "[concat(parameters('databaseAccounts_dbpedidos_name'), '/', parameters('databaseAccounts_dbpedidos_name'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dbpedidos_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "dbpedidos"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+            "apiVersion": "2022-08-15",
+            "name": "[concat(parameters('databaseAccounts_dbpedidos_name'), '/00000000-0000-0000-0000-000000000001')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dbpedidos_name'))]"
+            ],
+            "properties": {
+                "roleName": "Cosmos DB Built-in Data Reader",
+                "type": "BuiltInRole",
+                "assignableScopes": [
+                    "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dbpedidos_name'))]"
+                ],
+                "permissions": [
+                    {
+                        "dataActions": [
+                            "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/executeQuery",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/readChangeFeed",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/read"
+                        ],
+                        "notDataActions": []
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions",
+            "apiVersion": "2022-08-15",
+            "name": "[concat(parameters('databaseAccounts_dbpedidos_name'), '/00000000-0000-0000-0000-000000000002')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dbpedidos_name'))]"
+            ],
+            "properties": {
+                "roleName": "Cosmos DB Built-in Data Contributor",
+                "type": "BuiltInRole",
+                "assignableScopes": [
+                    "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dbpedidos_name'))]"
+                ],
+                "permissions": [
+                    {
+                        "dataActions": [
+                            "Microsoft.DocumentDB/databaseAccounts/readMetadata",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/*",
+                            "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/items/*"
+                        ],
+                        "notDataActions": []
+                    }
+                ]
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/degradationindependencyduration')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationindependencyduration",
+                    "DisplayName": "Degradation in dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/degradationinserverresponsetime')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationinserverresponsetime",
+                    "DisplayName": "Degradation in server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/digestMailConfiguration')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "digestMailConfiguration",
+                    "DisplayName": "Digest Mail Configuration",
+                    "Description": "This rule describes the digest mail preferences",
+                    "HelpUrl": "www.homail.com",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/extension_billingdatavolumedailyspikeextension')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_billingdatavolumedailyspikeextension",
+                    "DisplayName": "Abnormal rise in daily data volume (preview)",
+                    "Description": "This detection rule automatically analyzes the billing data generated by your application, and can warn you about an unusual increase in your application's billing costs",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/billing-data-volume-daily-spike.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/extension_canaryextension')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_canaryextension",
+                    "DisplayName": "Canary extension",
+                    "Description": "Canary extension",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/extension_exceptionchangeextension')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_exceptionchangeextension",
+                    "DisplayName": "Abnormal rise in exception volume (preview)",
+                    "Description": "This detection rule automatically analyzes the exceptions thrown in your application, and can warn you about unusual patterns in your exception telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/abnormal-rise-in-exception-volume.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/extension_memoryleakextension')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_memoryleakextension",
+                    "DisplayName": "Potential memory leak detected (preview)",
+                    "Description": "This detection rule automatically analyzes the memory consumption of each process in your application, and can warn you about potential memory leaks or increased memory consumption.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/memory-leak.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/extension_securityextensionspackage')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_securityextensionspackage",
+                    "DisplayName": "Potential security issue detected (preview)",
+                    "Description": "This detection rule automatically analyzes the telemetry generated by your application and detects potential security issues.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/application-security-detection-pack.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/extension_traceseveritydetector')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_traceseveritydetector",
+                    "DisplayName": "Degradation in trace severity ratio (preview)",
+                    "Description": "This detection rule automatically analyzes the trace logs emitted from your application, and can warn you about unusual patterns in the severity of your trace telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/degradation-in-trace-severity-ratio.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/longdependencyduration')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "longdependencyduration",
+                    "DisplayName": "Long dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/migrationToAlertRulesCompleted')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "migrationToAlertRulesCompleted",
+                    "DisplayName": "Migration To Alert Rules Completed",
+                    "Description": "A configuration that controls the migration state of Smart Detection to Smart Alerts",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": false,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": false,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/slowpageloadtime')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowpageloadtime",
+                    "DisplayName": "Slow page load time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_app_monitoramento_name'), '/slowserverresponsetime')]",
+            "location": "southcentralus",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowserverresponsetime",
+                    "DisplayName": "Slow server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+            "apiVersion": "2022-01-01-preview",
+            "name": "[concat(parameters('namespaces_sb_processar_pedidos_name'), '/RootManageSharedAccessKey')]",
+            "location": "Brazil South",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('namespaces_sb_processar_pedidos_name'))]"
+            ],
+            "properties": {
+                "rights": [
+                    "Listen",
+                    "Manage",
+                    "Send"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.ServiceBus/namespaces/networkRuleSets",
+            "apiVersion": "2022-01-01-preview",
+            "name": "[concat(parameters('namespaces_sb_processar_pedidos_name'), '/default')]",
+            "location": "Brazil South",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceBus/namespaces', parameters('namespaces_sb_processar_pedidos_name'))]"
+            ],
+            "properties": {
+                "publicNetworkAccess": "Enabled",
+                "defaultAction": "Allow",
+                "virtualNetworkRules": [],
+                "ipRules": []
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpestoragepedido01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpestoragepedido01_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": true,
+                    "days": 7
+                },
+                "isVersioningEnabled": false,
+                "changeFeed": {
+                    "enabled": false
+                },
+                "restorePolicy": {
+                    "enabled": false
+                },
+                "containerDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry8a96_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry8a96_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry9e7f_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry9e7f_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": false
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpestoragepedido01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpestoragepedido01_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry8a96_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry8a96_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry9e7f_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry9e7f_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpestoragepedido01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpestoragepedido01_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry8a96_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry8a96_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry9e7f_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry9e7f_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpestoragepedido01_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpestoragepedido01_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry8a96_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry8a96_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry9e7f_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry9e7f_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-03-01",
+            "name": "[parameters('sites_FnGenerateDataCosmos_name')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_XpeTelemetry_a543_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
+            },
+            "kind": "functionapp",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "fngeneratedatacosmos.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "fngeneratedatacosmos.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_XpeTelemetry_a543_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "vnetRouteAllEnabled": false,
+                "vnetImagePullEnabled": false,
+                "vnetContentShareEnabled": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 200,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "98F51141B3A1CA083369CC42B2B36FFCA40E24B83A7718CCBED42E83F609478E",
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2022-03-01",
+            "name": "[parameters('sites_FnGravarPedido_name')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_XpeTelemetry_85b4_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
+            },
+            "kind": "functionapp",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "fngravarpedido.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "fngravarpedido.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_XpeTelemetry_85b4_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "vnetRouteAllEnabled": false,
+                "vnetImagePullEnabled": false,
+                "vnetContentShareEnabled": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": false,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 200,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "customDomainVerificationId": "98F51141B3A1CA083369CC42B2B36FFCA40E24B83A7718CCBED42E83F609478E",
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_app_telemetria_name'), '/ftp')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_app_telemetria_name'))]"
+            ],
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGenerateDataCosmos_name'), '/ftp')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGenerateDataCosmos_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGravarPedido_name'), '/ftp')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGravarPedido_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_app_telemetria_name'), '/scm')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_app_telemetria_name'))]"
+            ],
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGenerateDataCosmos_name'), '/scm')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGenerateDataCosmos_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGravarPedido_name'), '/scm')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGravarPedido_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_app_telemetria_name'), '/web')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_app_telemetria_name'))]"
+            ],
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v6.0",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$app-telemetria",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "localMySqlEnabled": false,
+                "managedServiceIdentityId": 5601,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.2",
+                "ftpsState": "FtpsOnly",
+                "preWarmedInstanceCount": 0,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGenerateDataCosmos_name'), '/web')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGenerateDataCosmos_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
+            },
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v6.0",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$FnGenerateDataCosmos",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "cors": {
+                    "allowedOrigins": [
+                        "https://portal.azure.com"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "managedServiceIdentityId": 6372,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.2",
+                "ftpsState": "FtpsOnly",
+                "preWarmedInstanceCount": 0,
+                "functionAppScaleLimit": 200,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGravarPedido_name'), '/web')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGravarPedido_name'))]"
+            ],
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
+            },
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v6.0",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "remoteDebuggingVersion": "VS2019",
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$FnGravarPedido",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "cors": {
+                    "allowedOrigins": [
+                        "https://portal.azure.com"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "managedServiceIdentityId": 6371,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.2",
+                "ftpsState": "FtpsOnly",
+                "preWarmedInstanceCount": 0,
+                "functionAppScaleLimit": 200,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGravarPedido_name'), '/2cab856a95de45fd875cc8ed3a7874a7')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGravarPedido_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "ZipDeploy",
+                "message": "Created via a push deployment",
+                "start_time": "2022-10-17T01:00:53.2963393Z",
+                "end_time": "2022-10-17T01:00:55.9534848Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/deployments",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGenerateDataCosmos_name'), '/60fd30862d0d41c790540758f4cb167a')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGenerateDataCosmos_name'))]"
+            ],
+            "properties": {
+                "status": 4,
+                "author_email": "N/A",
+                "author": "N/A",
+                "deployer": "ZipDeploy",
+                "message": "Created via a push deployment",
+                "start_time": "2022-10-17T01:53:33.1741692Z",
+                "end_time": "2022-10-17T01:53:34.6742127Z",
+                "active": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGravarPedido_name'), '/FnGravarBlob')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGravarPedido_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://fngravarpedido.azurewebsites.net/admin/vfs/site/wwwroot/FnGravarBlob/",
+                "script_href": "https://fngravarpedido.azurewebsites.net/admin/vfs/site/wwwroot/bin/FnGravarBlob.dll",
+                "config_href": "https://fngravarpedido.azurewebsites.net/admin/vfs/site/wwwroot/FnGravarBlob/function.json",
+                "test_data_href": "https://fngravarpedido.azurewebsites.net/admin/vfs/data/Functions/sampledata/FnGravarBlob.dat",
+                "href": "https://fngravarpedido.azurewebsites.net/admin/functions/FnGravarBlob",
+                "config": {},
+                "invoke_url_template": "https://fngravarpedido.azurewebsites.net/api/fngravarblob",
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/functions",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGenerateDataCosmos_name'), '/Function1')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGenerateDataCosmos_name'))]"
+            ],
+            "properties": {
+                "script_root_path_href": "https://fngeneratedatacosmos.azurewebsites.net/admin/vfs/site/wwwroot/Function1/",
+                "script_href": "https://fngeneratedatacosmos.azurewebsites.net/admin/vfs/site/wwwroot/bin/FnGenerateDataTransacion.dll",
+                "config_href": "https://fngeneratedatacosmos.azurewebsites.net/admin/vfs/site/wwwroot/Function1/function.json",
+                "test_data_href": "https://fngeneratedatacosmos.azurewebsites.net/admin/vfs/data/Functions/sampledata/Function1.dat",
+                "href": "https://fngeneratedatacosmos.azurewebsites.net/admin/functions/Function1",
+                "config": {},
+                "invoke_url_template": "https://fngeneratedatacosmos.azurewebsites.net/api/function1",
+                "language": "DotNetAssembly",
+                "isDisabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_app_telemetria_name'), '/', parameters('sites_app_telemetria_name'), '.azurewebsites.net')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_app_telemetria_name'))]"
+            ],
+            "properties": {
+                "siteName": "app-telemetria",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGenerateDataCosmos_name'), '/', parameters('sites_FnGenerateDataCosmos_name'), '.azurewebsites.net')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGenerateDataCosmos_name'))]"
+            ],
+            "properties": {
+                "siteName": "FnGenerateDataCosmos",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_FnGravarPedido_name'), '/', parameters('sites_FnGravarPedido_name'), '.azurewebsites.net')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_FnGravarPedido_name'))]"
+            ],
+            "properties": {
+                "siteName": "FnGravarPedido",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/siteextensions",
+            "apiVersion": "2022-03-01",
+            "name": "[concat(parameters('sites_app_telemetria_name'), '/Microsoft.AspNetCore.AzureAppServices.SiteExtension')]",
+            "location": "Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_app_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngeneratedatacosmos')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apiVersionSets', parameters('service_api_telemetria_name'), '634d995e3e8ca2c6280a7626')]"
+            ],
+            "properties": {
+                "displayName": "FnGenerateDataCosmos",
+                "apiRevision": "1",
+                "description": "Import from \"FnGenerateDataCosmos\" Function App",
+                "subscriptionRequired": true,
+                "path": "api/dados",
+                "protocols": [
+                    "https"
+                ],
+                "authenticationSettings": {},
+                "subscriptionKeyParameterNames": {
+                    "header": "Ocp-Apim-Subscription-Key",
+                    "query": "subscription-key"
+                },
+                "isCurrent": true,
+                "apiVersion": "v1",
+                "apiVersionSetId": "[resourceId('Microsoft.ApiManagement/service/apiVersionSets', parameters('service_api_telemetria_name'), '634d995e3e8ca2c6280a7626')]"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngravarpedido')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]",
+                "[resourceId('Microsoft.ApiManagement/service/apiVersionSets', parameters('service_api_telemetria_name'), '634d9cd6d090615c14fc4f96')]"
+            ],
+            "properties": {
+                "displayName": "FnGravarPedido",
+                "apiRevision": "1",
+                "description": "Import from \"FnGravarPedido\" Function App",
+                "subscriptionRequired": true,
+                "path": "api/blob",
+                "protocols": [
+                    "https"
+                ],
+                "authenticationSettings": {},
+                "subscriptionKeyParameterNames": {
+                    "header": "Ocp-Apim-Subscription-Key",
+                    "query": "subscription-key"
+                },
+                "isCurrent": true,
+                "apiVersion": "v1",
+                "apiVersionSetId": "[resourceId('Microsoft.ApiManagement/service/apiVersionSets', parameters('service_api_telemetria_name'), '634d9cd6d090615c14fc4f96')]"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngeneratedatacosmos/get-function1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_api_telemetria_name'), 'fngeneratedatacosmos')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "Function1",
+                "method": "GET",
+                "urlTemplate": "/Function1",
+                "templateParameters": [],
+                "responses": []
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngravarpedido/post-fngravarblob')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_api_telemetria_name'), 'fngravarpedido')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "FnGravarBlob",
+                "method": "POST",
+                "urlTemplate": "/",
+                "templateParameters": [],
+                "responses": []
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngeneratedatacosmos/post-function1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_api_telemetria_name'), 'fngeneratedatacosmos')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "displayName": "Function1",
+                "method": "POST",
+                "urlTemplate": "/",
+                "templateParameters": [],
+                "responses": []
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/tags",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngeneratedatacosmos/dev')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_api_telemetria_name'), 'fngeneratedatacosmos')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/tags",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngravarpedido/dev')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_api_telemetria_name'), 'fngravarpedido')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/diagnostics",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/applicationinsights')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]",
+                "[resourceId('Microsoft.ApiManagement/service/loggers', parameters('service_api_telemetria_name'), 'app-monitoramento')]"
+            ],
+            "properties": {
+                "alwaysLog": "allErrors",
+                "httpCorrelationProtocol": "Legacy",
+                "logClientIp": true,
+                "loggerId": "[resourceId('Microsoft.ApiManagement/service/loggers', parameters('service_api_telemetria_name'), 'app-monitoramento')]",
+                "sampling": {
+                    "samplingType": "fixed",
+                    "percentage": 100
+                },
+                "frontend": {
+                    "request": {
+                        "dataMasking": {
+                            "queryParams": [
+                                {
+                                    "value": "*",
+                                    "mode": "Hide"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "backend": {
+                    "request": {
+                        "dataMasking": {
+                            "queryParams": [
+                                {
+                                    "value": "*",
+                                    "mode": "Hide"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/diagnostics/loggers",
+            "apiVersion": "2018-01-01",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/applicationinsights/app-monitoramento')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/diagnostics', parameters('service_api_telemetria_name'), 'applicationinsights')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/groups/users",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/administrators/1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_api_telemetria_name'), 'administrators')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/groups/users",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/developers/1')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/groups', parameters('service_api_telemetria_name'), 'developers')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/loggers",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/app-monitoramento')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]",
+                "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            ],
+            "properties": {
+                "loggerType": "applicationInsights",
+                "credentials": {
+                    "instrumentationKey": "{{Logger-Credentials--634d5cef463461142490efa3}}"
+                },
+                "isBuffered": true,
+                "resourceId": "[resourceId('microsoft.insights/components', parameters('components_app_monitoramento_name'))]"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products/apis",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/starter/fngeneratedatacosmos')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'starter')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products/apis",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/starter/fngravarpedido')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'starter')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products/groups",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/starter/administrators')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'starter')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products/groups",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/unlimited/administrators')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'unlimited')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products/groups",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/starter/developers')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'starter')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products/groups",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/unlimited/developers')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'unlimited')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products/groups",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/starter/guests')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'starter')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products/groups",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/unlimited/guests')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'unlimited')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ]
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/products/policies",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/starter/policy')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'starter')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "value": "<!--\r\n            IMPORTANT:\r\n            - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.\r\n            - Only the <forward-request> policy element can appear within the <backend> section element.\r\n            - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.\r\n            - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.\r\n            - To add a policy position the cursor at the desired insertion point and click on the round button associated with the policy.\r\n            - To remove a policy, delete the corresponding policy statement from the policy document.\r\n            - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.\r\n            - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.\r\n            - Policies are applied in the order of their appearance, from the top down.\r\n        -->\r\n<policies>\r\n  <inbound>\r\n    <rate-limit calls=\"5\" renewal-period=\"60\" />\r\n    <quota calls=\"100\" renewal-period=\"604800\" />\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n</policies>",
+                "format": "xml"
+            }
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers",
+            "apiVersion": "2022-08-15",
+            "name": "[concat(parameters('databaseAccounts_dbpedidos_name'), '/', parameters('databaseAccounts_dbpedidos_name'), '/pedidos')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts/sqlDatabases', parameters('databaseAccounts_dbpedidos_name'), parameters('databaseAccounts_dbpedidos_name'))]",
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', parameters('databaseAccounts_dbpedidos_name'))]"
+            ],
+            "properties": {
+                "resource": {
+                    "id": "pedidos",
+                    "indexingPolicy": {
+                        "indexingMode": "consistent",
+                        "automatic": true,
+                        "includedPaths": [
+                            {
+                                "path": "/*"
+                            }
+                        ],
+                        "excludedPaths": [
+                            {
+                                "path": "/\"_etag\"/?"
+                            }
+                        ]
+                    },
+                    "partitionKey": {
+                        "paths": [
+                            "/IdPedido"
+                        ],
+                        "kind": "Hash"
+                    },
+                    "uniqueKeyPolicy": {
+                        "uniqueKeys": []
+                    },
+                    "conflictResolutionPolicy": {
+                        "mode": "LastWriterWins",
+                        "conflictResolutionPath": "/_ts"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpestoragepedido01_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_xpestoragepedido01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpestoragepedido01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry8a96_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_xpetelemetry8a96_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry8a96_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry9e7f_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_xpetelemetry9e7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry9e7f_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpestoragepedido01_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_xpestoragepedido01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpestoragepedido01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry8a96_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_xpetelemetry8a96_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry8a96_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry9e7f_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_xpetelemetry9e7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry9e7f_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpestoragepedido01_name'), '/default/pedidos')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_xpestoragepedido01_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpestoragepedido01_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "Blob"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry9e7f_name'), '/default/fngeneratedatacosmos9de8')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_xpetelemetry9e7f_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry9e7f_name'))]"
+            ],
+            "properties": {
+                "accessTier": "TransactionOptimized",
+                "shareQuota": 5120,
+                "enabledProtocols": "SMB"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
+            "apiVersion": "2022-05-01",
+            "name": "[concat(parameters('storageAccounts_xpetelemetry8a96_name'), '/default/fngravarpedidoa63f')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/fileServices', parameters('storageAccounts_xpetelemetry8a96_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_xpetelemetry8a96_name'))]"
+            ],
+            "properties": {
+                "accessTier": "TransactionOptimized",
+                "shareQuota": 5120,
+                "enabledProtocols": "SMB"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngeneratedatacosmos/get-function1/policy')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('service_api_telemetria_name'), 'fngeneratedatacosmos', 'get-function1')]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_api_telemetria_name'), 'fngeneratedatacosmos')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "value": "<policies>\r\n  <inbound>\r\n    <base />\r\n    <set-backend-service id=\"apim-generated-policy\" backend-id=\"fngeneratedatacosmos\" />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n  <on-error>\r\n    <base />\r\n  </on-error>\r\n</policies>",
+                "format": "xml"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngeneratedatacosmos/post-function1/policy')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('service_api_telemetria_name'), 'fngeneratedatacosmos', 'post-function1')]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_api_telemetria_name'), 'fngeneratedatacosmos')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "value": "<policies>\r\n  <inbound>\r\n    <base />\r\n    <set-backend-service id=\"apim-generated-policy\" backend-id=\"fngeneratedatacosmos\" />\r\n    <rewrite-uri template=\"/Function1\" />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n  <on-error>\r\n    <base />\r\n  </on-error>\r\n</policies>",
+                "format": "xml"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations/policies",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/fngravarpedido/post-fngravarblob/policy')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis/operations', parameters('service_api_telemetria_name'), 'fngravarpedido', 'post-fngravarblob')]",
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('service_api_telemetria_name'), 'fngravarpedido')]",
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]"
+            ],
+            "properties": {
+                "value": "<policies>\r\n  <inbound>\r\n    <base />\r\n    <set-backend-service id=\"apim-generated-policy\" backend-id=\"fngravarpedido\" />\r\n    <rewrite-uri template=\"/FnGravarBlob\" />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n  <on-error>\r\n    <base />\r\n  </on-error>\r\n</policies>",
+                "format": "xml"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/subscriptions",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/634d4e45333a350058070001')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]",
+                "[resourceId('Microsoft.ApiManagement/service/users', parameters('service_api_telemetria_name'), '1')]",
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'starter')]"
+            ],
+            "properties": {
+                "ownerId": "[resourceId('Microsoft.ApiManagement/service/users', parameters('service_api_telemetria_name'), '1')]",
+                "scope": "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'starter')]",
+                "state": "active",
+                "displayName": "[parameters('subscriptions_634d4e45333a350058070001_displayName')]"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/subscriptions",
+            "apiVersion": "2021-12-01-preview",
+            "name": "[concat(parameters('service_api_telemetria_name'), '/634d4e45333a350058070002')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service', parameters('service_api_telemetria_name'))]",
+                "[resourceId('Microsoft.ApiManagement/service/users', parameters('service_api_telemetria_name'), '1')]",
+                "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'unlimited')]"
+            ],
+            "properties": {
+                "ownerId": "[resourceId('Microsoft.ApiManagement/service/users', parameters('service_api_telemetria_name'), '1')]",
+                "scope": "[resourceId('Microsoft.ApiManagement/service/products', parameters('service_api_telemetria_name'), 'unlimited')]",
+                "state": "active",
+                "displayName": "[parameters('subscriptions_634d4e45333a350058070002_displayName')]"
+            }
+        }
+    ]
+}

@@ -1,0 +1,66 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptions_634d4e45333a350058070001_displayName": {
+            "value": null
+        },
+        "subscriptions_634d4e45333a350058070002_displayName": {
+            "value": null
+        },
+        "users_1_lastName": {
+            "value": null
+        },
+        "sites_app_telemetria_name": {
+            "value": null
+        },
+        "sites_FnGravarPedido_name": {
+            "value": null
+        },
+        "vaults_kvtelemetria01_name": {
+            "value": null
+        },
+        "sites_FnGenerateDataCosmos_name": {
+            "value": null
+        },
+        "service_api_telemetria_name": {
+            "value": null
+        },
+        "databaseAccounts_dbpedidos_name": {
+            "value": null
+        },
+        "components_app_monitoramento_name": {
+            "value": null
+        },
+        "serverfarms_ASP_XpeTelemetry_85b4_name": {
+            "value": null
+        },
+        "serverfarms_ASP_XpeTelemetry_a543_name": {
+            "value": null
+        },
+        "storageAccounts_xpetelemetry8a96_name": {
+            "value": null
+        },
+        "storageAccounts_xpetelemetry9e7f_name": {
+            "value": null
+        },
+        "namespaces_sb_processar_pedidos_name": {
+            "value": null
+        },
+        "storageAccounts_xpestoragepedido01_name": {
+            "value": null
+        },
+        "smartdetectoralertrules_failure_anomalies___app_monitoramento_name": {
+            "value": null
+        },
+        "actiongroups_application_insights_smart_detection_externalid": {
+            "value": null
+        },
+        "workspaces_DefaultWorkspace_f0b99507_d9cd_4a31_93f8_ce27b88b7969_SCUS_externalid": {
+            "value": null
+        },
+        "serverfarms_ASP_appxpegroup_8345_externalid": {
+            "value": null
+        }
+    }
+}
