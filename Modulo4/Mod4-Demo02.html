@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demonstração 02</title>
+    <style>
+        div {
+            position: absolute;
+            border: 4px solid red;
+            width: 500px;
+            height: 100px;
+        }
+        
+        div>ul>li {
+            color: greenyellow;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        video {
+            height: 100%;
+            width: 100%;
+        }
+        
+        canvas {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <ul></ul>
+    </div>
+    <video autoplay id="video"></video>
+    <canvas id="canvas"></canvas>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="camera.js"></script>
+
+    <script>
+        const subscriptionKey = "3196cdd9d39f435099c60741d9ef412e";
+        const url = "https://xpe-cog.cognitiveservices.azure.com/vision/v3.2/describe";
+
+        var makeblob = function(dataURL) {
+            const BASE64_MARKER = ';base64,';
+            const parts = dataURL.split(BASE64_MARKER);
+            const contentType = parts[0].split(':')[1];
+            const raw = window.atob(parts[1]);
+            const rawLength = raw.length;
+            const uInt8Array = new Uint8Array(rawLength);
+
+            for (let i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+
+            return new Blob([uInt8Array], {
+                type: contentType
+            });
+        }
+
+        var processImage = function(sourceImage) {
+            var param = {
+                "maxCandidates": "1",
+                "language": "pt",
+                "model-version": "latest",
+            };
+
+            $.ajax({
+                url: url + "?" + $.param(param),
+                type: "POST",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("Content-Type", "application/octet-stream");
+                    xhr.setRequestHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+                },
+                data: sourceImage,
+                processData: false
+            }).done(function(data) {
+                debugger
+                if (data.description.captions.length > 0)
+                    makeDiv(data.description.captions);
+            });
+        }
+
+        var makeDiv = function(data) {
+            $(data).each(function(idx, obj) {
+                $("ul").empty();
+                $("ul").append(`<li>Descrição:${obj.text}</li>`);
+                $("ul").append(`<li>% Certeza: ${obj.confidence}</li>`);
+            });
+        }
+    </script>
+</body>
+
+</html>

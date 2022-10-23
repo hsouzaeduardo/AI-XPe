@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "SyW8JrZGX7QCZApJ4xvcFT02mD0J2afLVh54wSV7KcJDHX4bCjHF5vs8TlRxtGC0V+qvGNzv2AniMtL5Qs5B+w==",
+  "success": true,
+  "projectFilePath": "C:\\Temp\\XPAI\\AI-XPe\\Modulo4\\Mod4-Demo06\\Vacal\\Vacal.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Windows 10\\.nuget\\packages\\microsoft.cognitiveservices.speech\\1.19.0\\microsoft.cognitiveservices.speech.1.19.0.nupkg.sha512",
+    "C:\\Users\\Windows 10\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.28\\microsoft.netcore.app.host.win-x64.3.1.28.nupkg.sha512"
+  ],
+  "logs": []
+}
