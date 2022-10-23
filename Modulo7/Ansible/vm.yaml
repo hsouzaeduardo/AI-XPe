@@ -1,0 +1,119 @@
+---
+- name: Criando uma VM
+  hosts: localhost
+  connection: local
+  vars_prompt:
+    - name: password
+      prompt: "Digite a senha do administrador local da VM"
+  tasks:
+
+  - name: Criando Grupo de Recursos
+    azure_rm_resourcegroup:
+      name: IaC-Ansible-VM
+      location: eastus
+
+  - name: Criando uma rede virtual
+    azure_rm_virtualnetwork:
+      resource_group: IaC-Ansible-VM
+      name: vNet
+      address_prefixes: "10.0.0.0/16"
+
+  - name: Incluindo subnet
+    azure_rm_subnet:
+      resource_group: IaC-Ansible-VM
+      name: subnet
+      address_prefix: "10.0.1.0/24"
+      virtual_network: vNet
+
+  - name: Criando IP Publico
+    azure_rm_publicipaddress:
+      resource_group: IaC-Ansible-VM
+      allocation_method: Static
+      name: pip
+    register: output_ip_address
+
+  - name: Endeço IP publico
+    debug:
+      msg: "O Ip publico {{ output_ip_address.state.ip_address }}"
+  
+  - name: Criar grupo de segurança de rede
+    azure_rm_securitygroup:
+      resource_group: IaC-Ansible-VM
+      name: networkSecurityGroup
+      rules:
+        - name: 'allow_rdp'
+          protocol: Tcp
+          destination_port_range: 3389
+          access: Allow
+          priority: 1001
+          direction: Inbound
+        - name: 'allow_web_traffic'
+          protocol: Tcp
+          destination_port_range:
+            - 80
+            - 443
+          access: Allow
+          priority: 1002
+          direction: Inbound
+        - name: 'allow_powershell_remoting'
+          protocol: Tcp
+          destination_port_range: 
+            - 5985
+            - 5986
+          access: Allow
+          priority: 1003
+          direction: Inbound
+
+  - name: Criar uma interface de rede
+    azure_rm_networkinterface:
+      name: nic
+      resource_group: IaC-Ansible-VM
+      virtual_network: vNet
+      subnet_name: subnet
+      security_group: networkSecurityGroup
+      ip_configurations:
+        - name: default
+          public_ip_address_name: pip
+          primary: True
+
+  - name: Criando a VM
+    azure_rm_virtualmachine:
+      resource_group: IaC-Ansible-VM
+      name: win-vm
+      vm_size: Standard_DS1_v2
+      admin_username: azureuser
+      admin_password: "{{ password }}"
+      network_interfaces: nic
+      os_type: Windows
+      image:
+          offer: WindowsServer
+          publisher: MicrosoftWindowsServer
+          sku: 2019-Datacenter
+          version: latest
+    no_log: true
+
+  - name: Criar extensão de script de VM para habilitar o listner HTTPS WinRM
+    azure_rm_virtualmachineextension:
+      name: winrm-extension
+      resource_group: IaC-Ansible-VM
+      virtual_machine_name: win-vm
+      publisher: Microsoft.Compute
+      virtual_machine_extension_type: CustomScriptExtension
+      type_handler_version: '1.9'
+      settings: '{"fileUris": ["https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"],"commandToExecute": "powershell -ExecutionPolicy Unrestricted -File ConfigureRemotingForAnsible.ps1"}'
+      auto_upgrade_minor_version: true
+
+  - name: Obtenha os IPs público
+    azure_rm_publicipaddress_info:
+      resource_group: IaC-Ansible-VM
+      name: pip
+    register: publicipaddresses
+
+  - name: set public ip address fact
+    set_fact: publicipaddress="{{ publicipaddresses | json_query('publicipaddresses[0].ip_address')}}"
+
+  - name: aguarde a porta 5686 WinRM ficar online
+    wait_for:
+      port: 5986
+      host: '{{ publicipaddress }}'
+      timeout: 600
