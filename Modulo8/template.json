@@ -68,15 +68,15 @@
             "type": "String"
         },
         "actiongroups_application_insights_smart_detection_externalid": {
-            "defaultValue": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/adf02/providers/microsoft.insights/actiongroups/application insights smart detection",
+            "defaultValue": "/subscriptions/{{subscritionID}}/resourceGroups/adf02/providers/microsoft.insights/actiongroups/application insights smart detection",
             "type": "String"
         },
         "workspaces_DefaultWorkspace_f0b99507_d9cd_4a31_93f8_ce27b88b7969_SCUS_externalid": {
-            "defaultValue": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/DefaultResourceGroup-SCUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-f0b99507-d9cd-4a31-93f8-ce27b88b7969-SCUS",
+            "defaultValue": "/subscriptions/{{subscritionID}}/resourceGroups/DefaultResourceGroup-SCUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-{{subscritionID}}-SCUS",
             "type": "String"
         },
         "serverfarms_ASP_appxpegroup_8345_externalid": {
-            "defaultValue": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/appxpe_group/providers/Microsoft.Web/serverfarms/ASP-appxpegroup-8345",
+            "defaultValue": "/subscriptions/{{subscritionID}}/resourceGroups/appxpe_group/providers/Microsoft.Web/serverfarms/ASP-appxpegroup-8345",
             "type": "String"
         }
     },
@@ -212,10 +212,10 @@
                     "family": "A",
                     "name": "Standard"
                 },
-                "tenantId": "7247031b-59eb-41cb-b463-ac1db7d5a4d0",
+                "tenantId": "{{tenantId}}",
                 "accessPolicies": [
                     {
-                        "tenantId": "7247031b-59eb-41cb-b463-ac1db7d5a4d0",
+                        "tenantId": "{{tenantId}}",
                         "objectId": "6f307f3b-58e2-4d3a-899f-92a0205da0db",
                         "permissions": {
                             "keys": [
@@ -261,7 +261,7 @@
                         }
                     },
                     {
-                        "tenantId": "7247031b-59eb-41cb-b463-ac1db7d5a4d0",
+                        "tenantId": "{{tenantId}}",
                         "objectId": "dd13f04c-d07a-4114-9d6b-f5c2b5ccf387",
                         "permissions": {
                             "keys": [],
@@ -601,7 +601,7 @@
                 "description": "FnGenerateDataCosmos",
                 "url": "https://fngeneratedatacosmos.azurewebsites.net/api",
                 "protocol": "http",
-                "resourceId": "https://management.azure.com/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/Microsoft.Web/sites/FnGenerateDataCosmos",
+                "resourceId": "https://management.azure.com/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/Microsoft.Web/sites/FnGenerateDataCosmos",
                 "credentials": {
                     "header": {
                         "x-functions-key": [
@@ -622,7 +622,7 @@
                 "description": "FnGravarPedido",
                 "url": "https://fngravarpedido.azurewebsites.net/api",
                 "protocol": "http",
-                "resourceId": "https://management.azure.com/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/Microsoft.Web/sites/FnGravarPedido",
+                "resourceId": "https://management.azure.com/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/Microsoft.Web/sites/FnGravarPedido",
                 "credentials": {
                     "header": {
                         "x-functions-key": [
@@ -2182,7 +2182,7 @@
                 "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_XpeTelemetry_a543_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
                 "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
             },
             "kind": "functionapp",
@@ -2241,7 +2241,7 @@
                 "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_XpeTelemetry_85b4_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
                 "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
             },
             "kind": "functionapp",
@@ -2312,7 +2312,7 @@
                 "[resourceId('Microsoft.Web/sites', parameters('sites_FnGenerateDataCosmos_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
                 "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
             },
             "properties": {
@@ -2328,7 +2328,7 @@
                 "[resourceId('Microsoft.Web/sites', parameters('sites_FnGravarPedido_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
                 "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
             },
             "properties": {
@@ -2356,7 +2356,7 @@
                 "[resourceId('Microsoft.Web/sites', parameters('sites_FnGenerateDataCosmos_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
                 "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
             },
             "properties": {
@@ -2372,7 +2372,7 @@
                 "[resourceId('Microsoft.Web/sites', parameters('sites_FnGravarPedido_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
                 "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
             },
             "properties": {
@@ -2468,7 +2468,7 @@
                 "[resourceId('Microsoft.Web/sites', parameters('sites_FnGenerateDataCosmos_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
                 "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
             },
             "properties": {
@@ -2558,7 +2558,7 @@
                 "[resourceId('Microsoft.Web/sites', parameters('sites_FnGravarPedido_name'))]"
             ],
             "tags": {
-                "hidden-link: /app-insights-resource-id": "/subscriptions/f0b99507-d9cd-4a31-93f8-ce27b88b7969/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/{{subscritionID}}/resourceGroups/XpeTelemetry/providers/microsoft.insights/components/app-monitoramento",
                 "hidden-link: /app-insights-instrumentation-key": "b8d036e7-5b49-4fb7-988c-3a37629ecf34"
             },
             "properties": {
