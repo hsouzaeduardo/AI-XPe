@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+</head>
+<body class="container">
+    
+        <h1>Texto para Fala</h1>
+        <div class="form-group col-md-6">
+                <button id="fala" class="btn btn-primary">Falar</button>
+        </div>
+        <div class="form-group col-md-6">
+            <textarea id="texto" class="form-control"></textarea>
+        </div>
+            
+   <script>
+        var SpeechSDK;
+        const region = "eastus";
+        const subscriptionKey = "f6782a8635a24676a85acb06f1d081e3";
+        const originalLang = "pt-br"; 
+         document.getElementById("fala").addEventListener("click", function(event) {
+              event.preventDefault();
+              var text = document.getElementById("texto").value;
+              falaParaTexto(text);
+         });
+
+         function falaParaTexto(textToSpeech) {
+            var speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, region);
+            speechConfig.speechSynthesisLanguage = "pt-BR";
+            speechConfig.speechSynthesisVoiceName = "pt-BR-NicolauNeural";
+            speechConfig.speechSynthesisOutputFormat = SpeechSDK.SpeechSynthesisOutputFormat.Audio24Khz16KBitRateMonoMp3;
+            var synthesizer = new SpeechSDK.SpeechSynthesizer(speechConfig);
+            synthesizer.speakTextAsync(
+                textToSpeech,
+                function (result) {
+                    if (result.reason === SpeechSDK.ResultReason.Canceled) {
+                        console.log("Error: " + result.errorDetails);
+                    }
+                    window.console.log(result);
+                    synthesizer.close();
+                    synthesizer = undefined;
+                },
+                function (err) {
+                    window.console.log(err);
+                    synthesizer.close();
+                    synthesizer = undefined;
+                });
+        }
+
+   </script>
+</body>
+</html>

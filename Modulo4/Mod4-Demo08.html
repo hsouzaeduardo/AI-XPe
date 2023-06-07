@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+</head>
+<body class="container">
+    
+        <h1>Teste de Reconhecimento de Voz</h1>
+    <button id="fala" class="btn btn-primary">Falar</button>
+
+    <select class="form-control" id="languageTargetOptions">
+        <option value="ar-EG-SalmaNeural">Arabic - EG</option>
+        <option value="ca-ES-AlbaNeural">Catalan - ES</option>
+        <option value="da-DK-JeppeNeural">Danish - DK</option>
+        <option value="de-DE-BerndNeural">German - DE</option>
+        <option value="en-AU-NatashaNeural">English - AU</option>
+        <option value="en-CA-ClaraNeural">English - CA</option>
+        <option value="en-GB-NoahNeural">English - GB</option>
+        <option value="en-IN-NeerjaNeural">English - IN</option>
+        <option value="en-US-AmberNeural" selected="selected">English - US</option>
+        <option value="es-ES-ElviraNeural">Spanish - ES</option>
+        <option value="es-MX-LibertoNeural">Spanish - MX</option>
+        <option value="fi-FI-HarriNeural">Finnish - FI</option>
+        <option value="fr-CA-JeanNeural">French - CA</option>
+        <option value="fr-FR-ClaudeNeural">French - FR</option>
+        <option value="hi-IN-MadhurNeural">Hindi - IN</option>
+        <option value="it-IT-CataldoNeural">Italian - IT</option>
+        <option value="ja-JP-KeitaNeural">Japanese - JP</option>
+        <option value="ko-KR-InJoonNeural">Korean - KR</option>
+        <option value="nb-NO-FinnNeural">Norwegian - NO</option>
+        <option value="nl-NL-ColetteNeural">Dutch - NL</option>
+        <option value="pl-PL-ZofiaNeural">Polish - PL</option>
+        <option value="pt-BR-BrendaNeural">Portuguese - BR</option>
+        <option value="pt-PT-RaquelNeural">Portuguese - PT</option>
+        <option value="ru-RU-DmitryNeural">Russian - RU</option>
+        <option value="sv-SE-HilleviNeural">Swedish - SE</option>
+        <option value="zh-CN-XiaohanNeural">Chinese - CN</option>
+        <option value="zh-HK-HiuGaaiNeural">Chinese - HK</option>
+        <option value="zh-TW-YunJheNeural">Chinese - TW</option>
+    </select>
+    <div id="saida">
+
+    </div>
+   <script>
+        var SpeechSDK;
+        const region = "eastus";
+        const subscriptionKey = "f6782a8635a24676a85acb06f1d081e3";
+        const originalLang = "pt-br"; 
+         document.getElementById("fala").addEventListener("click", function(event) {
+              event.preventDefault();
+              getTranslation();
+         });
+
+         function getTranslation() {
+
+            var speechConfig = getSpeechConfig(SpeechSDK.SpeechTranslationConfig);
+            if (!speechConfig) return;
+            var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+            reco = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
+            reco.recognizeOnceAsync(
+                function (result) {
+                    debugger;
+                    let languageTarget = languageTargetOptions.value.substr(0, 2);
+                    let translation = result.translations.get(languageTarget);
+                    let text = result.text;
+                    let resultText = `Original: ${text}\r<br>`
+                    $("#saida").append(resultText);
+                    let resultTextTranslated = `Traduzido: ${translation}\r `
+                    $("#saida").append(resultTextTranslated);
+
+                    reco.close();
+                },
+                function (err) {
+                    window.console.log(err);
+                    reco.close();
+                });
+        }
+
+        function getSpeechConfig(sdkConfigType) {
+            let speechConfig = sdkConfigType.fromSubscription(subscriptionKey, region);
+            
+            // Definir o formato de saída do resultado Detalhado de como será solicitado.
+            // resultado JSON inclui alternativas, pontuações, palavras lexicais e outros informações.
+            if (sdkConfigType != SpeechSDK.SpeechConfig) {
+                window.console.log('Resultados detalhados não são suportados para este cenário.\r\n');
+            } else {
+                speechConfig.outputFormat = SpeechSDK.OutputFormat.Detailed;
+            }
+
+            // Define o(s) idioma(s) para o qual a fala deve ser traduzida.
+            // Vários idiomas podem ser especificados para tradução porém vamos utilizar apenas 1.
+            if (sdkConfigType == SpeechSDK.SpeechTranslationConfig) {
+                speechConfig.addTargetLanguage(languageTargetOptions.value.substr(0, 5));
+            }
+
+            speechConfig.speechRecognitionLanguage = originalLang;
+            return speechConfig;
+        }
+
+   </script>
+</body>
+</html>

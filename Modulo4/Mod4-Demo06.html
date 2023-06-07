@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+</head>
+<body class="container">
+    
+        <h1>Teste de Reconhecimento de Voz</h1>
+    <button id="fala" class="btn btn-primary">Falar</button>
+    <div id="saida">
+
+    </div>
+   <script>
+        var SpeechSDK;
+        const region = "eastus";
+        const subscriptionKey = "f6782a8635a24676a85acb06f1d081e3";
+        const originalLang = "pt-br"; 
+         document.getElementById("fala").addEventListener("click", function(event) {
+              event.preventDefault();
+              getRecongnizeText();
+         });
+
+         function getRecongnizeText() {
+
+            var speechConfig = SpeechSDK.SpeechConfig.fromSubscription(subscriptionKey, region);
+            speechConfig.speechRecognitionLanguage = originalLang;
+            var audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+            var recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+            recognizer.recognizeOnceAsync(
+                function (result) {
+                    debugger
+                    console.log(result.text);
+                    $("#saida").append(result.text + "</br>");
+                    recognizer.close();
+                    recognizer = undefined;
+
+                },
+                function (err) {
+                    console.trace("err - " + err);
+                    recognizer.close();
+                    recognizer = undefined;
+                });
+        }
+
+   </script>
+</body>
+</html>
